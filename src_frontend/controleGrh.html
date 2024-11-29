@@ -7,6 +7,9 @@
     <!-- CSS -->
     <link rel="stylesheet" href="controleGrh.css">
 
+    <!-- NAVEGADOR -->
+    <link rel="icon" href="dumbell.png" type="image/x-icon">
+
     <!-- IMPORTS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,21 +25,29 @@
         Relatório do Gerente
     </h1>
 
-    <table id="relatorioTabela">
-        <thead>
-            <tr>
-                <th>Nome do Usuário</th>
-                <th>Total de Horas Semanais</th>
-                <th>Total de Horas Gerais</th>
-                <th>Classificação</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Os dados serão preenchidos aqui pelo JavaScript -->
-        </tbody>
-    </table>
+    <div class="card_container">
+        <div class="background">
+        </div>
+        <div class="top">
+            <div class="card" id="entrada" onclick="abrirRelatorioS()">                              
+                <div class="title">
+                    <h1>Relatório Semanal</h1>
+                </div>
+            </div>
+            <div class="card" id="saida" onclick="abrirRelatorioG()">                
+                <div class="title">
+                    <h1>Relatório Geral</h1>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="card2">
+            
+        </div> -->
+    </div>
+
 
     <script>
+        // LOG OUT
         function sair() {
             localStorage.removeItem("USUARIO_ID");
             window.location.href = "login.html";
@@ -52,51 +63,21 @@
                 }
             }
 
+        // ?
         function abrirRelatorio(){
             window.location.href="relatorioGrh.html";
         }
 
-
-        // RELATÓRIO
-        async function buscarRelatorio() {
-            try {
-                const response = await fetch('http://localhost:3000/api/relatorio/gerente', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                const dados = await response.json();
-
-                if (response.ok) {
-                    // Preenche a tabela com os dados do relatório
-                    console.log(dados);
-                    const tabela = document.getElementById('relatorioTabela').getElementsByTagName('tbody')[0];
-
-                    dados.forEach(dado => {
-                        const novaLinha = tabela.insertRow();
-
-                        const celulaNome = novaLinha.insertCell(0);
-                        const celulaHorasSemanais = novaLinha.insertCell(1);
-                        const celulaHorasGerais = novaLinha.insertCell(2);
-                        const celulaClassificacao = novaLinha.insertCell(3);
-
-                        celulaNome.textContent = dado.nome_usuario;
-                        celulaHorasSemanais.textContent = dado.total_horas_semanal;
-                        celulaHorasGerais.textContent = dado.total_horas_geral;
-                        celulaClassificacao.textContent = dado.classificacao;
-                    });
-                } else {
-                    console.error('Erro ao buscar o relatório:', dados.message);
-                }
-            } catch (error) {
-                console.error('Erro ao buscar o relatório:', error);
-            }
+        // RELATORIO SEMANAL
+        function abrirRelatorioS(){
+            window.location.href="relatorioS.html";
         }
 
-        // Chama a função para preencher a tabela ao carregar a página
-        window.onload = buscarRelatorio;
+        // RELATORIO GEREAL
+        function abrirRelatorioG(){
+            window.location.href="relatorioG.html";
+        }
+
     </script>
 </body>
 </html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="relatorioS.css">
+
+    <!-- NAVEGADOR -->
+    <link rel="icon" href="dumbell.png" type="image/x-icon">
+
+    <!-- IMPORTS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=SUSE:wght@100..800&display=swap"
+        rel="stylesheet">
+
+    <title>Relatório Geral - BodyCode</title>
+</head>
+
+<body>
+    <button id="logout" onclick="voltar()">Voltar</button>
+
+    <table id="relatorioTabela">
+        <thead>
+            <tr>
+                <th>Nome do Usuário</th>
+                <th>Total de Horas Gerais</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os dados serão preenchidos aqui pelo JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // NÃO DEIXA MEXER NA URL
+        function authGuard() {
+            let userId = localStorage.getItem("USUARIO_ID");
+            if (userId !== null && userId !== undefined && userId !== "") {
+                return
+            } else {
+                window.location.href = "login.html";
+            }
+        }
+
+        // ?
+        function abrirRelatorio() {
+            window.location.href = "relatorioGrh.html";
+        }
+
+        // ORDENAÇÃO POR HORAS GERAIS (Maior para Menor)
+        function ordenarTabela() {
+            const tabela = document.getElementById('relatorioTabela');
+            const tbody = tabela.getElementsByTagName('tbody')[0];
+            const linhas = Array.from(tbody.rows);
+
+            // Função para converter HH:MM:SS para segundos
+            function horaParaSegundos(hora) {
+                if (!hora || hora.trim() === "") return 0; // Retorna 0 para valores vazios ou inválidos
+                const partes = hora.split(':').map(Number);
+                return partes[0] * 3600 + partes[1] * 60 + (partes[2] || 0); // Converte horas, minutos e segundos
+            }
+
+            // Ordena as linhas da tabela com base na coluna "Total de Horas Gerais" (2ª coluna)
+            linhas.sort((a, b) => {
+                const horasA = horaParaSegundos(a.cells[1].textContent.trim());
+                const horasB = horaParaSegundos(b.cells[1].textContent.trim());
+
+                // Ordena de forma decrescente
+                return horasB - horasA;
+            });
+
+            // Remove as linhas antigas e adiciona as ordenadas
+            linhas.forEach(linha => tbody.appendChild(linha));
+        }
+
+        // Chamada após preencher os dados na tabela
+        async function buscarRelatorio() {
+            try {
+                const response = await fetch('http://localhost:3000/api/relatorio/gerente', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const dados = await response.json();
+
+                if (response.ok) {
+                    // Filtra os usuários com ID 1, 2 ou 3
+                    const dadosFiltrados = dados.filter(dado => ![1, 2, 3].includes(dado.usuario_id));
+
+                    // Preenche a tabela com os dados filtrados
+                    const tabela = document.getElementById('relatorioTabela').getElementsByTagName('tbody')[0];
+
+                    dadosFiltrados.forEach(dado => {
+                        const novaLinha = tabela.insertRow();
+
+                        const celulaNome = novaLinha.insertCell(0);
+                        const celulaHorasGerais = novaLinha.insertCell(1);
+
+                        celulaNome.textContent = dado.nome_usuario;
+                        celulaHorasGerais.textContent = dado.total_horas_geral;
+                    });
+
+                    // Ordena a tabela após preencher
+                    ordenarTabela();
+                } else {
+                    console.error('Erro ao buscar o relatório:', dados.message);
+                }
+            } catch (error) {
+                console.error('Erro ao buscar o relatório:', error);
+            }
+        }
+
+        // Chama a função para preencher e ordenar a tabela ao carregar a página
+        window.onload = buscarRelatorio;
+
+        // VOLTAR PÁGINA
+        function voltar() {
+            window.location.href = "controleGrh.html";
+        }
+
+    </script>
+</body>
+
+</html>

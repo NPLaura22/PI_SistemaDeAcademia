@@ -139,6 +139,7 @@ app.get('/', (req, res) => {
 // INICIALIZA SERVIDOR
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
+    console.log(`Servidor Aluno-Gerente`);
     console.log(`Acesse a aplicação em http://localhost:${PORT}`);
 });
 

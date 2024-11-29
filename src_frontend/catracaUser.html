@@ -7,6 +7,9 @@
     <!-- CSS -->
     <link rel="stylesheet" href="catracaUser.css">
 
+    <!-- NAVEGADOR -->
+    <link rel="icon" href="dumbell.png" type="image/x-icon">
+
     <!-- IMPORTS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,28 +32,6 @@
             <span class="wrapp">-</span>
             <span class="classificacao"></span>
         </div>
-    </div>
-
-    <div class="card_container">
-        <div class="background">
-        </div>
-        <div class="top">
-            <div class="card" id="entrada">
-                <div class="icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>                               
-                <div class="title">
-                    <h1>Entrada</h1>
-                </div>
-            </div>
-            <div class="card" id="saida">
-                <div class="icon"><i class="fa-solid fa-arrow-right-to-bracket"></i></div>                
-                <div class="title">
-                    <h1>Saída</h1>
-                </div>
-            </div>
-        </div>
-        <!-- <div class="card2">
-            
-        </div> -->
     </div>
 
     <script>
@@ -76,84 +57,6 @@
                 String(data.getMinutes()).padStart(2, '0') + ':' +
                 String(data.getSeconds()).padStart(2, '0');
         }
-
-        // Registrar horário de entrada
-        entrada.addEventListener("click", (e) => {
-            let dataAtual = new Date();
-            let horarioEntrada = formatarDataHora(dataAtual);
-
-            const dados = {
-                usuarioId: localStorage.getItem("USUARIO_ID"), // ID do usuário logado
-                horarioEntrada: horarioEntrada,
-                horarioSaida: null, // Ainda não registrado
-                totalHoras: null,   // Ainda não calculado
-                statusAcesso: "Aguardando"
-            };
-
-            console.log('Enviando horário de entrada:', dados);
-
-            // Enviar para o backend via fetch
-            fetch('/api/catraca', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dados)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Resposta do servidor (entrada):', data);
-                function showToast() {
-                const toast = document.getElementById('toast');
-                toast.classList.add('show'); // Adiciona a classe para exibir o toast
-
-                // Remove o toast após 3 segundos
-                setTimeout(() => {
-                    toast.classList.remove('show'); // Remove a classe para ocultar o toast
-                }, 3000);
-            }
-
-            })
-            .catch(error => {
-                console.error('Erro ao enviar horário de entrada:', error);
-            });
-        });
-
-        // Registrar horário de saída
-        saida.addEventListener("click", (e) => {
-            let dataAtual = new Date();
-            let horarioSaida = formatarDataHora(dataAtual);
-
-            const dados = {
-                usuarioId: localStorage.getItem("USUARIO_ID"), // ID do usuário logado
-                horarioEntrada: null, // Não enviado nesta requisição
-                horarioSaida: horarioSaida,
-                totalHoras: null,   // Ainda não calculado
-                statusAcesso: "Finalizado"
-            };
-
-            console.log('Enviando horário de saída:', dados);
-
-            // Enviar para o backend via fetch
-            fetch('/api/catraca', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dados)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Resposta do servidor (saída):', data);
-                
-                sair(); // Redirecionar para a página de login
-            })
-            .catch(error => {
-                console.error('Erro ao enviar horário de saída:', error);
-                
-            });
-        });
-
             
             // NÃO DEIXA MEXER NA URL
             function authGuard(){

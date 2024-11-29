@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +8,20 @@
     <!-- CSS -->
     <link rel="stylesheet" href="relatorioGrh.css">
 
+    <!-- NAVEGADOR -->
+    <link rel="icon" href="dumbell.png" type="image/x-icon">
+
     <!-- IMPORTS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=SUSE:wght@100..800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=SUSE:wght@100..800&display=swap"
+        rel="stylesheet">
 
     <title>Relatório Gerente - BodyCode</title>
 </head>
+
 <body>
     <div class="menu">
         <select>
@@ -27,66 +34,85 @@
         </select>
     </div>
     <ul class="users">
-        
+
     </ul>
-    
+
     <script>
         let users = document.querySelector(".users"); 
         let dadosUsuarios;
         let dadosCatraca;
 
         // GET PARA PEGAR DADOS USUARIOS
-        async function getAllUsuarios() { /*FUNÇÃO PARA PEGAR TODOS OS ALUNOS*/
-        try {
-            const response = await fetch('http://localhost:3000/api/usuarios', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
+        async function getAllUsuarios() { 
+            try {
+                const response = await fetch('http://localhost:3000/api/usuarios', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
 
-            const data = await response.json();
+                const data = await response.json();
 
-            if (response.ok) {
-                dadosUsuarios = data;
-                console.log(data);
-                
-            } else {
-                document.getElementById('message').innerText = data.message || 'Erro ao buscar usuários.';
+                if (response.ok) {
+                    dadosUsuarios = data;
+                    console.log(data);
+
+                    // Filtra os usuários com ID 1, 2 ou 3
+                    const dadosFiltrados = dadosUsuarios.filter(usuario => ![1, 2, 3].includes(usuario.usuario_id));
+                    
+                    // Limpa a lista antes de exibir os novos dados
+                    users.innerHTML = '';
+
+                    // Exibe os dados filtrados
+                    exibirUsuarios(dadosFiltrados);
+                } else {
+                    document.getElementById('message').innerText = data.message || 'Erro ao buscar usuários.';
+                }
+            } catch (error) {
+                console.error('Erro ao buscar usuários:', error);
+                document.getElementById('message').innerText = 'Erro ao buscar usuários. Tente novamente.';
             }
-        } catch (error) {
-            console.error('Erro ao buscar usuários:', error);
-            document.getElementById('message').innerText = 'Erro ao buscar usuários. Tente novamente.';
         }
-    }
-    // GET PARA PEGAR DADOS CATRACA
-    async function getAllCatraca() { /*FUNÇÃO PARA PEGAR TODOS OS ALUNOS*/
-        try {
-            const response = await fetch('http://localhost:3000/api/catraca', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
 
-            const data = await response.json();
+        // GET PARA PEGAR DADOS CATRACA
+        async function getAllCatraca() {
+            try {
+                const response = await fetch('http://localhost:3000/api/catraca', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
 
-            if (response.ok) {
-                dadosCatraca = data;
-                console.log(data);
-                
-            } else {
-                document.getElementById('message').innerText = data.message || 'Erro ao buscar dados na catraca.';
+                const data = await response.json();
+
+                if (response.ok) {
+                    dadosCatraca = data;
+                    console.log(data);
+                    
+                } else {
+                    document.getElementById('message').innerText = data.message || 'Erro ao buscar dados na catraca.';
+                }
+            } catch (error) {
+                console.error('Erro ao buscar dados na catraca:', error);
+                document.getElementById('message').innerText = 'Erro ao buscar dados na catraca. Tente novamente.';
             }
-        } catch (error) {
-            console.error('Erro ao buscar dados na catraca:', error);
-            document.getElementById('message').innerText = 'Erro ao buscar dados na catraca. Tente novamente.';
         }
-    }
 
-    getAllUsuarios();
-    getAllCatraca();
+        // Função para exibir os usuários filtrados na página
+        function exibirUsuarios(usuarios) {
+            usuarios.forEach(usuario => {
+                const li = document.createElement('li');
+                li.textContent = `${usuario.nome_usuario} - ${usuario.classificacao}`;
+                users.appendChild(li);
+            });
+        }
+
+        getAllUsuarios();
+        getAllCatraca();
     </script>
 
 </body>
+
 </html>
