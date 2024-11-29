@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="controleGrh.css">
+
+    <!-- IMPORTS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=SUSE:wght@100..800&display=swap" rel="stylesheet">
+
+    <title>Controle Gerente - BodyCode</title>
+</head>
+<body onload="authGuard()">
+    <div class="background"></div>
+    <button id="logout" onclick="sair()">Log out</button>
+    <h1>
+        Relatório do Gerente
+    </h1>
+
+    <table id="relatorioTabela">
+        <thead>
+            <tr>
+                <th>Nome do Usuário</th>
+                <th>Total de Horas Semanais</th>
+                <th>Total de Horas Gerais</th>
+                <th>Classificação</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os dados serão preenchidos aqui pelo JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        function sair() {
+            localStorage.removeItem("USUARIO_ID");
+            window.location.href = "login.html";
+        }
+
+        // NÃO DEIXA MEXER NA URL
+        function authGuard(){
+                let userId = localStorage.getItem("USUARIO_ID");
+                if (userId !== null && userId !== undefined && userId !== "") {
+                    return
+                } else {
+                    window.location.href="login.html";
+                }
+            }
+
+        function abrirRelatorio(){
+            window.location.href="relatorioGrh.html";
+        }
+
+
+        // RELATÓRIO
+        async function buscarRelatorio() {
+            try {
+                const response = await fetch('http://localhost:3000/api/relatorio/gerente', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const dados = await response.json();
+
+                if (response.ok) {
+                    // Preenche a tabela com os dados do relatório
+                    console.log(dados);
+                    const tabela = document.getElementById('relatorioTabela').getElementsByTagName('tbody')[0];
+
+                    dados.forEach(dado => {
+                        const novaLinha = tabela.insertRow();
+
+                        const celulaNome = novaLinha.insertCell(0);
+                        const celulaHorasSemanais = novaLinha.insertCell(1);
+                        const celulaHorasGerais = novaLinha.insertCell(2);
+                        const celulaClassificacao = novaLinha.insertCell(3);
+
+                        celulaNome.textContent = dado.nome_usuario;
+                        celulaHorasSemanais.textContent = dado.total_horas_semanal;
+                        celulaHorasGerais.textContent = dado.total_horas_geral;
+                        celulaClassificacao.textContent = dado.classificacao;
+                    });
+                } else {
+                    console.error('Erro ao buscar o relatório:', dados.message);
+                }
+            } catch (error) {
+                console.error('Erro ao buscar o relatório:', error);
+            }
+        }
+
+        // Chama a função para preencher a tabela ao carregar a página
+        window.onload = buscarRelatorio;
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+// Rota principal para carregar o login.html
+app.get('/', (req, res) => {
+    const filePath = path.join(__dirname, 'src(2)', 'login.html');
+    console.log(`Tentando acessar: ${filePath}`);
+    res.sendFile(filePath);
+});

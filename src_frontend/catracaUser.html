@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="catracaUser.css">
+
+    <!-- IMPORTS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=SUSE:wght@100..800&display=swap" rel="stylesheet">
+
+    <title>Catraca Aluno - BodyCode</title>
+</head>
+<body onload="authGuard()">
+    <div id="toast" class="toast">
+        <p>Entrada registrada!</p>
+    </div>
+
+    <button id="logout" onclick="sair()">Log out</button>
+
+    <div class="title">
+        <h1 id="username"></h1>
+        <div>
+            <span class="horas"></span>
+            <span class="wrapp">-</span>
+            <span class="classificacao"></span>
+        </div>
+    </div>
+
+    <div class="card_container">
+        <div class="background">
+        </div>
+        <div class="top">
+            <div class="card" id="entrada">
+                <div class="icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>                               
+                <div class="title">
+                    <h1>Entrada</h1>
+                </div>
+            </div>
+            <div class="card" id="saida">
+                <div class="icon"><i class="fa-solid fa-arrow-right-to-bracket"></i></div>                
+                <div class="title">
+                    <h1>Saída</h1>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="card2">
+            
+        </div> -->
+    </div>
+
+    <script>
+        // por id: getElementById("entrada")
+        let entrada = document.getElementById("entrada");
+        let logout = document.getElementById("logout");
+        let username = document.getElementById("username");
+        // por classe: querySelector(".horas");
+        let horas = document.querySelector(".horas");
+        let classificacao = document.querySelector(".classificacao");
+        
+        function sair() {
+            localStorage.removeItem("USUARIO_ID");
+            window.location.href = "login.html";
+        }
+
+        // Função para formatar data e hora no padrão 'YYYY-MM-DD HH:MM:SS'
+        function formatarDataHora(data) {
+            return data.getFullYear() + '-' +
+                String(data.getMonth() + 1).padStart(2, '0') + '-' +
+                String(data.getDate()).padStart(2, '0') + ' ' +
+                String(data.getHours()).padStart(2, '0') + ':' +
+                String(data.getMinutes()).padStart(2, '0') + ':' +
+                String(data.getSeconds()).padStart(2, '0');
+        }
+
+        // Registrar horário de entrada
+        entrada.addEventListener("click", (e) => {
+            let dataAtual = new Date();
+            let horarioEntrada = formatarDataHora(dataAtual);
+
+            const dados = {
+                usuarioId: localStorage.getItem("USUARIO_ID"), // ID do usuário logado
+                horarioEntrada: horarioEntrada,
+                horarioSaida: null, // Ainda não registrado
+                totalHoras: null,   // Ainda não calculado
+                statusAcesso: "Aguardando"
+            };
+
+            console.log('Enviando horário de entrada:', dados);
+
+            // Enviar para o backend via fetch
+            fetch('/api/catraca', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dados)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Resposta do servidor (entrada):', data);
+                function showToast() {
+                const toast = document.getElementById('toast');
+                toast.classList.add('show'); // Adiciona a classe para exibir o toast
+
+                // Remove o toast após 3 segundos
+                setTimeout(() => {
+                    toast.classList.remove('show'); // Remove a classe para ocultar o toast
+                }, 3000);
+            }
+
+            })
+            .catch(error => {
+                console.error('Erro ao enviar horário de entrada:', error);
+            });
+        });
+
+        // Registrar horário de saída
+        saida.addEventListener("click", (e) => {
+            let dataAtual = new Date();
+            let horarioSaida = formatarDataHora(dataAtual);
+
+            const dados = {
+                usuarioId: localStorage.getItem("USUARIO_ID"), // ID do usuário logado
+                horarioEntrada: null, // Não enviado nesta requisição
+                horarioSaida: horarioSaida,
+                totalHoras: null,   // Ainda não calculado
+                statusAcesso: "Finalizado"
+            };
+
+            console.log('Enviando horário de saída:', dados);
+
+            // Enviar para o backend via fetch
+            fetch('/api/catraca', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dados)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Resposta do servidor (saída):', data);
+                
+                sair(); // Redirecionar para a página de login
+            })
+            .catch(error => {
+                console.error('Erro ao enviar horário de saída:', error);
+                
+            });
+        });
+
+            
+            // NÃO DEIXA MEXER NA URL
+            function authGuard(){
+                let userId = localStorage.getItem("USUARIO_ID");
+                if (userId !== null && userId !== undefined && userId !== "") {
+                    return
+                } else {
+                    window.location.href="login.html";
+                }
+            }
+
+        // PARA PEGAR NOME ALUNO BY ID (ESPECÍFICO)
+        async function fetchUsuarioById(id) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/usuarios/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Exibe os dados do usuário no console ou em um elemento HTML
+                console.log(data); // ou manipule o DOM para exibir os dados
+                username.innerHTML=data.NOME;
+                return data; // Retorna o usuário
+            } else {
+                document.getElementById('message').innerText = data.message || 'Erro ao buscar o usuário.';
+            }
+        } catch (error) {
+            console.error('Erro ao buscar o usuário:', error);
+            document.getElementById('message').innerText = 'Erro ao buscar o usuário. Tente novamente.';
+        }
+    }    
+
+    // PARA PEGAR TOTAL HORAS BY ID (ESPECÍFICO)
+    async function fetchHorasSemanaisById(id) {
+    try {
+        const response = await fetch(`http://localhost:3000/api/usuarios/${id}/hsemanais`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Exibe o total de horas semanais no console ou em um elemento HTML
+            console.log(`Total de horas semanais do usuário ${id}: ${data.totalHorasSemanais}`);
+            horas.innerHTML=data.totalHorasSemanais;
+            classificacao.innerHTML = classificarHoras(data.totalHorasSemanais);
+            
+            return data; // Retorna o total de horas semanais
+        } else {
+            console.error('Erro ao buscar as horas semanais:', data.message || 'Erro desconhecido');
+        }
+    } catch (error) {
+        console.error('Erro ao buscar as horas semanais:', error);
+    }
+}
+        function classificarHoras(horasSemanais) {
+            let classificacao = "";
+
+            // Converte o tempo em formato HH:MM:SS para horas decimais
+            const [horas, minutos, segundos] = horasSemanais.split(":").map(Number);
+            const totalHoras = horas + minutos / 60 + segundos / 3600;
+
+            // Classificação com base nas horas semanais
+            if (totalHoras <= 5) {
+                classificacao = "Iniciante";
+            } else if (totalHoras >= 6 && totalHoras <= 10) {
+                classificacao = "Intermediário";
+            } else if (totalHoras >= 11 && totalHoras <= 20) {
+                classificacao = "Avançado";
+            } else if (totalHoras > 20) {
+                classificacao = "Extremamente avançado";
+            } else {
+                classificacao = "Valor de horas inválido"; // Caso as horas não sejam válidas
+            }
+
+            return classificacao;
+        }
+
+
+    fetchUsuarioById(localStorage.getItem("USUARIO_ID"));
+    fetchHorasSemanaisById(localStorage.getItem("USUARIO_ID"));
+    authGuard();
+    </script>
+
+</body>
+</html>

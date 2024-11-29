@@ -1,0 +1,272 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins";
+}
+body {
+    position: relative;    
+    background-size: cover; 
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*background-color: rgb(190, 167, 160);*/
+    gap: 15px;
+    .background{
+        background-image: url('home.jpg');
+        
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        filter: blur(2px);
+        z-index: -1;
+        background-repeat: no-repeat;
+    }
+
+    .form1{        
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 350px;
+        height: 500px;
+
+    form{      
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.493);  
+        max-width: 350px;
+        height: 330px;
+        padding: 35px;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden; 
+        position: relative;
+
+        .glass{
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(30px);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            filter: blur(3px);
+            z-index: -1;
+        }
+        
+        .header{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            
+            span{                
+                color: rgb(34, 34, 34);
+            }
+
+            a{
+                text-decoration: none;
+                color: rgb(223, 221, 221);
+            }
+        }
+        
+        h1{
+            font-weight: 400;
+        }
+
+        .input_container{
+            position: relative;
+            i{
+                position: absolute;
+                left: 5px;
+                top: calc(50% - 17.5px);
+                width: 35px;
+                height: 35px;
+                background-color: rgba(255, 255, 255, 0.753);
+                border-radius: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            input{
+                padding: 12px;
+                width: 100%;
+                padding-left: 50px;
+                border-radius: 50px;
+                border: none;
+                background-color: rgba(255, 255, 255, 0.356);
+                /* & é o mesmo que usar imput:placeholder */
+                &::placeholder{ 
+                    color: rgb(94, 94, 94);
+                }
+            }
+        }
+        .footer{
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            p{
+                font-size: .8rem;
+                color: rgb(34, 34, 34);
+                width: 80%;
+            }
+            h6{
+                font-size: .9rem;
+                color: red;
+                width: 100%;              
+                font-weight: 400;  
+            }
+            button{
+                min-width: 40px;
+                min-height: 40px;
+                border-radius: 50px;
+                background-color: rgb(22, 22, 22);
+                color: white;
+                border: none;
+                position: relative;
+                transition: all .3s;
+                &:hover{
+                    cursor: pointer;
+                    opacity: .8;
+                    transform: scale(1.1);
+                }
+                &:active{
+                    transform: scale(0.95);
+                }
+                .perna{
+                    position: absolute;
+                    width: 25px;
+                    height: 20px;
+                    top: calc(50% - 10px);
+                    left: -10px;
+                    border-radius: 50px;
+                    background-color: rgb(22, 22, 22);
+                }
+            }  
+
+        }
+    .consume{
+        font-size: .8rem;
+        width: 100%;
+        text-align: center;
+        span{
+            font-size: .8rem;
+        }
+    }
+    }
+    
+    .cardpreto{
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.493);
+        max-width: 350px;
+        height: 150px;
+        background-color: rgb(22, 22, 22);
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        position: relative;
+        h1{
+            font-weight: 300;
+            font-size: 1.2rem;
+        }
+            span{
+            color: gray;
+            font-size: .8rem;
+        }
+    }
+}
+
+    .form2{
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.493);
+        width: 350px;
+        height: 500px;
+        background-color: rgb(236, 236, 236);
+        padding: 35px;
+        border-radius: 20px;
+        position: relative;
+        display: flex;
+        align-items: start;
+        justify-content: end;
+
+        h3{
+            color: rgb(22, 22, 22);
+            font-weight: 300;
+        }
+
+        &::before{
+            content: "";
+            width: 170px;
+            height: 170px;
+            background-color: rgb(81, 128, 49);
+            position: absolute;
+            border-radius: 50%;
+            top: calc(50% - 85px);
+            left: calc(50% - 85px);            
+            filter: blur(4px);
+        }       
+
+
+        .vidro{
+            position: absolute;
+            left: 5%;
+            top: calc(50% - 47%);            
+            height: 94%;
+            width: 48%;            
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(30px);
+
+            &::after{
+                content: "";
+                width: 170px;
+                height: 170px;
+                background-color: rgb(81, 128, 49);
+                position: absolute;
+                border-radius: 50%;
+                top: calc(50% - 85px);
+                right: -75px;
+                filter: blur(20px);
+                z-index: 1;
+            }
+
+            .header{
+                z-index: 3;
+
+                h1{
+                    font-weight: 300;
+                }
+                span{
+                    font-weight: 300;
+                    font-size: 2rem;
+                    color: rgb(94, 94, 94);
+                    transform: translate(-60px);
+                }                
+            }
+            .icon{
+                width: 100%;
+                display: flex;
+                justify-content: center; 
+                z-index: 3;               
+            }
+        }
+
+    }
+}
+
+/* RESPONSIVIDADE */
+@media (width < 740px) {
+    body{
+        .form2{
+            display: none;
+        }
+    }
+}

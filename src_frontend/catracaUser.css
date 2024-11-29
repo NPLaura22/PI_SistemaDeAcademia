@@ -1,0 +1,157 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins";
+}
+
+body{
+    position: relative;    
+    background-size: cover; 
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(207, 207, 207, 0.911);
+    /* background-image: url("backCatracaAdm.webp"),linear-gradient(90deg, rgb(0, 0, 0), rgb(0, 0, 0));  */
+    background-repeat: no-repeat;
+    background-size: cover;
+    gap: 15px;    
+    flex-direction: column;
+
+    /* Estilo para o Toast */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4caf50; /* Cor verde */
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    z-index: 1000;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+    
+    #logout{
+        border-radius: 5px;
+        border: none;
+        padding: 10px 20px;
+        background-color: rgb(173, 139, 100);
+        color: rgb(224, 223, 220);
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 50px;
+    }
+
+    .title{
+        width: 450px;
+        text-align: center;
+
+        span{
+            color: gray;
+        }
+        h1{
+            color: rgb(173, 139, 100);
+        }
+        div{
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            div{
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+
+    .card_container{
+        display: flex;
+        width: 500px;
+        height: 350px;
+        padding: 20px;
+        border-radius: 20px;
+        overflow: hidden;   
+        position: relative;
+        z-index: 2;            
+        /* box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.342); */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        /* background: rgba(233, 233, 233, 0.158); */
+        .top{
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            gap: 20px;
+            .card{
+                color: rgb(66, 43, 13);                
+                width: 40%;
+                height: 230px;
+                border-radius: 20px;                
+                border: 1px solid rgb(224, 224, 224);
+                /* background: rgba(233, 233, 233, 0.158); */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                /* box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.342); */                
+                background-image: url("inOut.webp");  
+                background-size: cover;              
+                filter: grayscale(1);
+                transition: all .6s;
+                &:hover{
+                    filter: grayscale(0);
+                    cursor: pointer;
+                    transform: scale(1.1);
+                }
+                .icon{
+                    font-size: 3rem;
+                    color: rgb(224, 224, 224);
+                }
+                .title{
+                    color: rgb(224, 224, 224);
+                    h1{                        
+                        font-weight: 400;
+                        font-size: 1.5rem;
+                    }                    
+                }
+            }   
+        }   
+        .card2{
+            width: 85%;
+            height: 130px;
+            border-radius: 10px;
+            background-size: cover;
+            background-image: url("backCatracaAdm.webp");
+        }    
+
+        .background{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            filter: blur(7px);
+            background-color: rgba(240, 240, 240, 0);
+            z-index: -1;
+        }
+
+
+    }
+}

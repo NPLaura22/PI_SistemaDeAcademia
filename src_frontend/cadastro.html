@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="cadastro.css">
+
+    <!-- IMPORTS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=SUSE:wght@100..800&display=swap" rel="stylesheet">
+
+    <title>Sign Up - BodyCode</title>
+</head>
+
+<body>
+    <div class="background"></div>
+    <div class="form1" >    
+    <form id="cadastroForm">
+        <div class="header">
+            <span>Já possui conta?</span>
+            <a href="login.html">Log in</a>
+        </div>
+        <h1>Sign Up</h1>
+        <div class="input_container">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" placeholder="Nome completo" id="name">
+        </div>
+        <div class="input_container">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="text" placeholder="Username ou e-mail" id="email">
+        </div>
+        <div class="input_container">
+            <i class="fa-solid fa-calendar-days"></i>
+            <input class="date" type="date" placeholder="Data de nascimento" id="dob">
+        </div>
+        <div class="input_container">
+            <i class="fa-solid fa-hashtag"></i>
+            <input type="text" placeholder="CPF" id="cpf" maxlength="11">
+        </div>
+        <div class="footer">
+            <p>Um corpo saudável é o resultado de uma mente equilibrada.</p>
+            <button><i class="fa-solid fa-angle-right"></i><div class="perna"></div></button>  
+                        
+        </div>
+        <div class="consume">
+            <!-- <span>Desejamos um ótimo treino!</span> -->
+        </div>
+        <div class="glass"></div>
+    </form>
+</div>
+
+    <div class="form2">        
+        <div class="vidro">
+            <div class="header">
+                <h1 id="diaS"></h1>
+                <span id="diaN"></span>
+            </div>
+            <span class="icon"><i class="fa-brands fa-slack"></i></span>
+        </div>
+        <h3 id="periodo"></h3>       
+
+    </div>
+
+    <script>
+        document.getElementById('cadastroForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const dob = document.getElementById('dob').value;
+    const cpf = document.getElementById('cpf').value;
+
+    console.log("teste");
+
+    try {
+        const response = await fetch('http://localhost:3000/api/cadastro', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, email, dob, cpf }),
+        });
+
+        const data = await response.json();
+        // document.getElementById('message').innerText = data.message;
+        console.log("data", data);
+
+        if (response.ok) {            
+                window.location.href = "/login.html"; 
+        }
+    } catch (error) {
+        // document.getElementById('message').innerText = "Erro ao cadastrar. Tente novamente.";
+        console.log("Erro ao cadastrar. Tente novamente.", error);
+    }
+
+    // Limpa os campos do formulário
+    this.reset();
+});
+
+// DIA SEMANA + DIA + SAUDAÇÃO
+let diaS = document.getElementById("diaS");
+let diaN = document.getElementById("diaN");
+let periodo = document.getElementById("periodo");
+
+
+function obterDataHoraAtual() {
+    // Criando um objeto Date para obter a data e hora atuais
+    const agora = new Date();
+
+    // Arrays para os dias da semana e períodos do dia
+    const diasDaSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+    // Obtendo o dia da semana (0 a 6) e o dia do mês (1 a 31)
+    const diaSemana = diasDaSemana[agora.getDay()];
+    const dia = agora.getDate();
+
+    // Obtendo a hora atual (de 0 a 23)
+    const hora = agora.getHours();
+
+    // const minuto = agora.getMinutes();
+
+    // Determinando o período do dia (Manhã, Tarde ou Noite)
+    let saudacao;
+    if (hora >= 0 && hora <= 11) saudacao = 'Bom dia';  // De 00:00 a 11:59 é manhã
+    else if (hora >= 12 && hora <= 17) saudacao = 'Boa tarde';  // De 12:00 a 17:59 é tarde
+    else saudacao = 'Boa noite';  // De 18:00 a 23:59 é noite
+
+    // Atualizando os elementos HTML com as informações
+    diaS.innerHTML = diaSemana;  // Exibe o nome do dia da semana (ex: Qui)
+    diaN.innerHTML = dia;  // Exibe o número do dia (ex: 28)
+    periodo.innerHTML = saudacao;  // Exibe a saudação (ex: Bom dia, Boa tarde, Boa noite)
+    
+    // Chama a função ao carregar a página para exibir a data e a saudação
+    window.onload = obterDataHoraAtual;
+}
+
+console.log(obterDataHoraAtual()); 
+    </script>
+
+
+</body>
+
+</html>

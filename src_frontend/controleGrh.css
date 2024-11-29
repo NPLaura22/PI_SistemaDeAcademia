@@ -1,0 +1,152 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins";
+}
+
+body{
+    position: relative;    
+    background-size: cover; 
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(207, 207, 207, 0.911);     
+    background-repeat: no-repeat;
+    background-size: cover; 
+    gap: 15px; 
+    flex-direction: column;
+    /* .background{
+        background-image: url("gerente.jpg");
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        filter: blur(2px);
+        z-index: -1;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }    */
+    
+    h1{
+        margin: 35px 0;
+    }
+    
+    #logout{
+        border-radius: 5px;
+        border: none;
+        padding: 10px 20px;
+        background-color: rgb(173, 139, 100);
+        color: rgb(224, 223, 220);
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 50px;
+    }
+
+     table {
+        width: 70%;
+        border-collapse: collapse;
+        
+        background-color: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(30px);
+        color: rgb(48, 48, 48);
+        tr{
+            max-width: 50px;
+        }
+    }
+        th, td {
+            padding: 8px;
+            text-align: center;
+            width: 100px;
+            border: 1px solid rgb(173, 139, 100);            
+        }
+        th{
+            color: white;
+            background-color: rgb(173, 139, 100);
+            border: 1px solid rgb(255, 255, 255); 
+             
+        }
+        td{
+            width: 100px;
+        }
+
+    .card_container{
+        display: flex;
+        width: 500px;
+        height: 350px;
+        padding: 20px;
+        border-radius: 20px;
+        overflow: hidden;   
+        position: relative;
+        z-index: 2;            
+        /* box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.342); */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        /* background: rgba(233, 233, 233, 0.158); */
+        .top{
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            gap: 20px;
+            .card{
+                color: rgb(66, 43, 13);                
+                width: 40%;
+                height: 230px;
+                border-radius: 20px;                
+                border: 1px solid rgb(224, 224, 224);
+                /* background: rgba(233, 233, 233, 0.158); */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                /* box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.342); */                
+                background-image: url("inOut.webp");  
+                background-size: cover;              
+                filter: grayscale(1);
+                transition: all .6s;
+                &:hover{
+                    filter: grayscale(0);
+                    cursor: pointer;
+                    transform: scale(1.1);
+                }
+                .icon{
+                    font-size: 3rem;
+                    color: rgb(224, 224, 224);
+                }
+                .title{
+                    color: rgb(224, 224, 224);
+                    h1{                        
+                        font-weight: 400;
+                        font-size: 1.5rem;
+                    }                    
+                }
+            }   
+        }   
+        .card2{
+            width: 85%;
+            height: 130px;
+            border-radius: 10px;
+            background-size: cover;
+            background-image: url("backCatracaAdm.webp");
+        }    
+
+        .background{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            filter: blur(7px);
+            background-color: rgba(240, 240, 240, 0);
+            z-index: -1;
+        }
+
+
+    }
+}
