@@ -23,8 +23,11 @@
 </head>
 
 <body onload="authGuard()">
-    <div id="toast" class="toast">
+    <div id="toastEntrada" class="toast">
         <p>Entrada registrada!</p>
+    </div>
+    <div id="toastSaida" class="toast">
+        <p>Saída registrada!</p>
     </div>
 
     <button id="logout" onclick="sair()">Log out</button>
@@ -75,6 +78,17 @@
                 String(data.getSeconds()).padStart(2, '0');
         }
 
+        // Função reutilizável para exibir o toast
+        function showToast(toastId) {
+            const toast = document.getElementById(toastId);
+            toast.classList.add('show'); // Exibe o toast
+
+            // Oculta o toast após 3 segundos
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
         // Registrar horário de entrada
         entrada.addEventListener("click", (e) => {
             let dataAtual = new Date();
@@ -101,16 +115,7 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('Resposta do servidor (entrada):', data);
-                    function showToast() {
-                        const toast = document.getElementById('toast');
-                        toast.classList.add('show'); // Adiciona a classe para exibir o toast
-
-                        // Remove o toast após 3 segundos
-                        setTimeout(() => {
-                            toast.classList.remove('show'); // Remove a classe para ocultar o toast
-                        }, 3000);
-                    }
-
+                    showToast('toastEntrada'); // Exibe o toast de entrada
                 })
                 .catch(error => {
                     console.error('Erro ao enviar horário de entrada:', error);
@@ -143,12 +148,10 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('Resposta do servidor (saída):', data);
-
-                    sair(); // Redirecionar para a página de login
+                    showToast('toastSaida'); // Exibe o toast de saída
                 })
                 .catch(error => {
                     console.error('Erro ao enviar horário de saída:', error);
-
                 });
         });
 
@@ -162,85 +165,6 @@
                 window.location.href = "login.html";
             }
         }
-
-        // PARA PEGAR NOME ALUNO BY ID (ESPECÍFICO)
-        async function fetchUsuarioById(id) {
-            try {
-                const response = await fetch(`http://localhost:3000/api/usuarios/${id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    // Exibe os dados do usuário no console ou em um elemento HTML
-                    console.log(data); // ou manipule o DOM para exibir os dados
-                    username.innerHTML = data.NOME;
-                    return data; // Retorna o usuário
-                } else {
-                    document.getElementById('message').innerText = data.message || 'Erro ao buscar o usuário.';
-                }
-            } catch (error) {
-                console.error('Erro ao buscar o usuário:', error);
-                document.getElementById('message').innerText = 'Erro ao buscar o usuário. Tente novamente.';
-            }
-        }
-
-        // PARA PEGAR TOTAL HORAS BY ID (ESPECÍFICO)
-        async function fetchHorasSemanaisById(id) {
-            try {
-                const response = await fetch(`http://localhost:3000/api/usuarios/${id}/hsemanais`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    // Exibe o total de horas semanais no console ou em um elemento HTML
-                    console.log(`Total de horas semanais do usuário ${id}: ${data.totalHorasSemanais}`);
-                    horas.innerHTML = data.totalHorasSemanais;
-                    classificacao.innerHTML = classificarHoras(data.totalHorasSemanais);
-
-                    return data; // Retorna o total de horas semanais
-                } else {
-                    console.error('Erro ao buscar as horas semanais:', data.message || 'Erro desconhecido');
-                }
-            } catch (error) {
-                console.error('Erro ao buscar as horas semanais:', error);
-            }
-        }
-        function classificarHoras(horasSemanais) {
-            let classificacao = "";
-
-            // Converte o tempo em formato HH:MM:SS para horas decimais
-            const [horas, minutos, segundos] = horasSemanais.split(":").map(Number);
-            const totalHoras = horas + minutos / 60 + segundos / 3600;
-
-            // Classificação com base nas horas semanais
-            if (totalHoras <= 5) {
-                classificacao = "Iniciante";
-            } else if (totalHoras >= 6 && totalHoras <= 10) {
-                classificacao = "Intermediário";
-            } else if (totalHoras >= 11 && totalHoras <= 20) {
-                classificacao = "Avançado";
-            } else if (totalHoras > 20) {
-                classificacao = "Extremamente avançado";
-            } else {
-                classificacao = "Valor de horas inválido"; // Caso as horas não sejam válidas
-            }
-
-            return classificacao;
-        }
-
-
-        fetchUsuarioById(localStorage.getItem("USUARIO_ID"));
-        fetchHorasSemanaisById(localStorage.getItem("USUARIO_ID"));
         authGuard();
     </script>
 

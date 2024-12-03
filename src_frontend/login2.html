@@ -47,7 +47,7 @@
         </form>
 
         <div class="cardpreto">
-            <h1>BodyCode</h1>
+            <h1>Catraca</h1>
             <span>Venha descobrir como a BodyCode pode transformar sua rotina em uma jornada de bem-estar.</span>
             <!-- <span class="discovery">Discovery</span> -->
         </div>
@@ -112,12 +112,10 @@
                 if (usuarios[i].CPF === cpf.value) {
                     usuarioEncontrado = true;  // CPF encontrado, alteramos a variável
 
-                    // GERENTE
+                    // GERENTE - BLOQUEADO
                     for (let j = 0; adm.length > j; j++) {
                         if (adm[j] === cpf.value) {
-                            // Passar os dados para verificar se usuário está cadastrado como admin
-                            localStorage.setItem("USUARIO_ID", usuarios[i].ID);
-                            window.location.href = "controleGrh.html";
+                            window.location.reload();
                             return;
                         }
                     }

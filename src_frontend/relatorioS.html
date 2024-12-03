@@ -67,14 +67,9 @@
                 const dados = await response.json();
 
                 if (response.ok) {
-                    // // Verifique os dados recebidos
-                    // console.log("Dados recebidos: ", dados);
-
                     // Filtra os dados para excluir usuários com IDs 1, 2 e 3
-                    const dadosFiltrados = dados.filter(dado => ![1, 2, 3].includes(dado.usuario_id)); 
-
-                    // Verifique se a filtragem foi aplicada corretamente
-                    // console.log("Dados filtrados: ", dadosFiltrados);
+                    const dadosFiltrados = dados.filter(dado => ![1, 2, 3].includes(dado.usuario_id));
+                    console.log(dados);
 
                     // Preenche a tabela com os dados filtrados
                     const tabela = document.getElementById('relatorioTabela').getElementsByTagName('tbody')[0];
@@ -89,7 +84,8 @@
                         const celulaHorasSemanais = novaLinha.insertCell(1);
                         const celulaClassificacao = novaLinha.insertCell(2);
 
-                        celulaNome.textContent = dado.nome_usuario;
+                        // Adiciona o ícone ao lado do nome do usuário
+                        celulaNome.innerHTML = `<i class="fa-solid fa-user"></i> ${dado.nome_usuario}`;
                         celulaHorasSemanais.textContent = dado.total_horas_semanal;
                         celulaClassificacao.textContent = dado.classificacao;
                     });

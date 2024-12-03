@@ -22,6 +22,9 @@ body{
     width: 100%;
     min-height: 100vh;
     padding: 60px 10px;
+    background-color: rgba(207, 207, 207, 0.911);     
+    background-repeat: no-repeat;
+    background-size: cover; 
 
     #logout{
         border-radius: 5px;
@@ -35,12 +38,46 @@ body{
         margin: 50px;
     }
     
-    table, th, td{
-        border-collapse:collapse;
-        padding: 10px;
-        text-align: left;
-        border: 1px solid rgb(160 160 160);
+    table {
+        width: 100%; /* Faz a tabela ocupar 100% da largura do container */
+        border-collapse: collapse; /* Remove espaços entre as bordas */
+        background-color: rgb(245, 245, 245); /* Fundo claro para contraste */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra suave */
+        border-radius: 8px; /* Bordas arredondadas */
+        overflow: hidden; /* Evita que bordas arredondadas sejam cortadas */
+        margin: 20px 0; /* Espaçamento externo para separar da página */
     }
+    
+    th, td {
+        padding: 12px 15px; /* Espaçamento interno generoso */
+        text-align: left; /* Alinha o conteúdo à esquerda */
+        border: 1px solid rgba(160, 160, 160, 0.3); /* Bordas leves */
+    }
+    
+    th {
+        background-color: rgb(173, 139, 100); /* Fundo para cabeçalhos */
+        color: white; /* Cor do texto para contraste */
+        font-weight: 600; /* Negrito para destaque */
+        text-transform: uppercase; /* Letras maiúsculas */
+        font-size: 14px; /* Tamanho da fonte */
+    }
+    
+    td {
+        background-color: rgb(255, 255, 255); /* Fundo branco para contraste */
+        color: rgb(80, 80, 80); /* Texto escuro */
+        font-size: 14px; /* Tamanho da fonte */
+        border-bottom: 1px solid rgba(160, 160, 160, 0.3); /* Linha suave */
+    }
+    
+    tr:nth-child(even) td {
+        background-color: rgb(245, 245, 245); /* Alterna cor de fundo */
+    }
+    
+    tr:hover td {
+        background-color: rgb(225, 225, 225); /* Destaque na linha ao passar o mouse */
+        cursor: pointer; /* Adiciona um cursor de indicação */
+    }
+    
 
 
 }
